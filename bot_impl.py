@@ -12,12 +12,34 @@ def get_help(message):
     user_id = data.register_user(message)
     bot.send_message(user_id, """Here are my commands:
     /add -- for adding new spending
+    /remove -- remove category
     /look -- look to current container
     /history -- history of containers
     /set -- choose current container(from ones in history)
     /reset -- reset current container(also saves current to history)
     Also you can type any of these commands without slash
     E.g. add <category> <amount>""")
+
+
+'''
+@bot.message_handler(commands={"alias"})
+def alias(message):
+    user_id = data.register_user(message)
+    words = message.text.split(" ")
+    if len(words) != 4:  # <command> <type> <alias> <category>
+        bot.send_message(user_id, "Usage: [/]alias cmd/name <your alias> <inner name>")
+    else:
+        if words[1] == "cmd":
+            if words[3] in cmd_alias:
+                cmd_alias.update({words[2]: cmd_alias.get(words[3])})
+            else:
+                bot.send_message(user_id, "Please provide a valid command to alias")
+        elif words[1] == "name":
+            if words[1] in data.get_user_container(user_id).amounts.keys():
+                pass
+        else:
+            bot.send_message(user_id, "Valid alias types are cmd and name")
+'''
 
 
 @bot.message_handler(commands=["add"])
@@ -95,8 +117,17 @@ def getid(message):
 
 @bot.message_handler(commands=["dump"])
 def dump(message):
-    data.dump_nodes()
-    bot.send_message(message.chat.id, "Dumped " + ", ".join(data.users.values()))
+    user_id = data.register_user(message)
+    data.dump_node(user_id)
+    bot.send_message(user_id, "Dumped " + data.users.get(user_id))
+
+
+# noinspection SpellCheckingInspection
+@bot.message_handler(commands=["dumpall"])
+def dump_all(message):
+    for user_id in data.nodes.keys():
+        data.dump_node(user_id)
+    bot.send_message(message.chat.id, "Dumped ", ", ".join(data.users.values()))
 
 
 @bot.message_handler(content_types=["text"])
@@ -105,13 +136,14 @@ def func(message):
     if cmd in cmd_alias:
         cmd_alias[cmd](message)
     else:
-        bot.send_message(message.chat.id, "Could not recognize your request\nPrint help for list of commands")
+        bot.send_message(message.chat.id,
+                         """Could not recognize your request
+                         Print help for list of commands""")
 
 
 if __name__ == "__main__":
     data = Data()
-    data.read_nodes()
     cmd_alias = {"add": add, "look": look, "history": get_history, "help": get_help,
-                 "set": set_current, "reset": reset_current,
+                 "set": set_current, "reset": reset_current, "remove": remove,
                  "l": look, "h": get_history}
     bot.polling(none_stop=True)
