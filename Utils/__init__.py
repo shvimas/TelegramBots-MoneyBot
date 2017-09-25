@@ -14,35 +14,37 @@ class Container:
                 return True, "Restaurants"
         return False, ""
 
+    def update_total(self):
+        total = 0
+        keys = [key for key in self.amounts if key != "Total"]
+        for key in keys:
+            total += self.amounts[key]
+        self.amounts.update({"Total": total})
+
     def add(self, category: str, amount: str):
         prefix = ""
         try:
             is_set, inner_name = self.find_category(category)
             if is_set:
                 if inner_name != "Total":
-                    if "Total" not in self.amounts.keys():
-                        self.amounts.update({"Total": 0})
                     self.amounts[inner_name] += int(amount)
-                    self.amounts["Total"] += int(amount)
                 else:
                     return "Can not update Total"
             else:
                 self.categories.append(category)
                 self.amounts.update({category: int(amount)})
-                if "Total" not in self.amounts.keys():
-                    self.amounts.update({"Total": 0})
-                self.amounts["Total"] += int(amount)
                 prefix = "Added new category: " + category + "\n"
         except ValueError:
             return "Failed to add " + amount + " to " + category
+        self.update_total()
         return prefix + "Added " + amount + " to " + inner_name
 
     def remove(self, cat: str) -> str:
         is_set, inner_name = self.find_category(cat)
         if is_set & (inner_name != "Total"):
-            self.amounts["Total"] -= self.amounts[inner_name]
             self.categories.remove(inner_name)
             self.amounts.pop(inner_name)
+            self.update_total()
             return "Removed " + inner_name
         return "Failed to remove " + cat
 
@@ -70,7 +72,7 @@ class Container:
 
 class History:
     def __init__(self):
-        self.containers = [Container()]
+        self.containers = []
 
     def __len__(self):
         return len(self.containers)
@@ -93,11 +95,13 @@ class History:
 
 class Users:
     def __init__(self):
-        # self.users = {66178825: "shvimas"}
         self.users = {}
 
     def __getitem__(self, item) -> str:
         return self.users.__getitem__(item)
+
+    def get(self, k, default=None):
+        return self.users.get(k, default)
 
     def add_user(self, user_id: int, user: str):
         self.users.update({user_id: user})
@@ -154,23 +158,26 @@ class Data:
         user_id = message.chat.id
         if user_id not in self.users.keys():
             self.users.add_user(user_id, message.chat.username)
-            cont, hist = self.read_node(user_id).get(user_id)[0]
+            cont, hist = self.read_node(user_id).get(user_id)
             self.nodes.add_node(user_id, cont, hist)
         return user_id
     
     def get_node_dump_name(self, user_id: int) -> str:
         return str(user_id) + "_" + self.users[user_id] + "_node.txt"
 
+    def dump_node(self, user_id):
+        self.get_user_history(user_id).save(self.get_user_container(user_id))
+        out = open(self.dump_dir + "/" + self.get_node_dump_name(user_id), mode="w")
+        out.write("Container:\n\t" +
+                  "\n\t".join(self.nodes[user_id][0].to_string()[:-1].split("\n")) +
+                  "\n\nHistory:\n\t" +
+                  "\n\t".join(self.nodes[user_id][1].to_string().split("\n"))
+                  .replace("\n\t\n", "\n\n")[:-2])
+        out.close()
+
     def dump_nodes(self):
         for user_id in self.nodes.keys():
-            self.get_user_history(user_id).save(self.get_user_container(user_id))
-            out = open(self.dump_dir + "/" + self.get_node_dump_name(user_id), mode="w")
-            out.write("Container:\n\t" +
-                      "\n\t".join(self.nodes[user_id][0].to_string()[:-1].split("\n")) +
-                      "\n\nHistory:\n\t" +
-                      "\n\t".join(self.nodes[user_id][1].to_string().split("\n"))
-                      .replace("\n\t\n", "\n\n")[:-2])
-            out.close()
+            self.dump_node(user_id)
 
     @staticmethod
     def read_container(file) -> Container:
@@ -188,7 +195,6 @@ class Data:
 
     def read_history(self, file) -> History:
         history = History()
-        history.containers[0].empty()
         container = self.read_container(file)
         while not container.is_empty():
             history.save(container)
