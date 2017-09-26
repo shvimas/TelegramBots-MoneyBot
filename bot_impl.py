@@ -52,6 +52,7 @@ def add(message):
         cat = words[1]
         amount = words[2]
         result = data.get_user_container(user_id).add(cat, amount)
+        data.dump_node(user_id)
         bot.send_message(user_id, result)
 
 
@@ -63,6 +64,7 @@ def remove(message):
         bot.send_message(user_id, "Usage: [/]remove <category>")
         return
     result = data.get_user_container(user_id).remove(words[1])
+    data.dump_node(user_id)
     bot.send_message(user_id, result)
 
 
@@ -98,6 +100,7 @@ def set_current(message):
     history.save(data.get_user_container(user_id))
     new_container = history[int(words[1])]
     data.set_user_container(user_id, new_container)
+    data.dump_node(user_id)
     bot.send_message(user_id, "Set as current:\n\t" +
                      "\n\t".join(new_container.to_string().split(sep="\n")))
 
@@ -107,6 +110,7 @@ def reset_current(message):
     user_id = message.chat.id
     data.get_user_history(user_id).save(data.get_user_container(user_id))
     data.set_user_container(user_id, Container())
+    data.dump_node(user_id)
     bot.send_message(user_id, "Reset current")
 
 
