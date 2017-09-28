@@ -1,0 +1,39 @@
+Container:
+	Food : 670
+	Restaurants : 2800
+	Car : 1000
+	Transport : 750
+	Personal : 0
+	FoodDB : 1000
+	Other : 0
+	Total : 6220
+
+History:
+	Total : 0
+
+	Food : 300
+	Restaurants : 1800
+	Car : 1000
+	Transport : 0
+	Personal : 0
+	FoodDB : 0
+	Other : 0
+	Total : 3100
+
+	Food : 600
+	Restaurants : 2800
+	Car : 1000
+	Transport : 750
+	Personal : 0
+	FoodDB : 1000
+	Other : 0
+	Total : 6150
+
+	Food : 670
+	Restaurants : 2800
+	Car : 1000
+	Transport : 750
+	Personal : 0
+	FoodDB : 1000
+	Other : 0
+	Total : 6220

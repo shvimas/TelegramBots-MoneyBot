@@ -1,4 +1,0 @@
-sudo rm -rfv ./bot
-mkdir bot
-git clone https://github.com/shvimas/TelegramBots-MoneyBot.git ./bot/
-docker build -t shvimas-bot .

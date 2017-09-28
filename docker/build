@@ -1,0 +1,7 @@
+cd ..
+sudo rm -rfv bot
+mkdir bot
+svn export https://github.com/shvimas/TelegramBots-MoneyBot/trunk/src ./bot/
+cd docker
+docker build -t shvimas-bot .
+sudo rm -rfv ../bot
