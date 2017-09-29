@@ -12,7 +12,7 @@ class Container:
                 return True, inner_name
             if category.lower() == "rest":
                 return True, "Restaurants"
-        return False, ""
+        return False, category
 
     def update_total(self):
         total = 0
@@ -20,6 +20,8 @@ class Container:
         for key in keys:
             total += self.amounts[key]
         self.amounts.update({"Total": total})
+        if "Total" not in self.categories:
+            self.categories.append("Total")
 
     def add(self, category: str, amount: str):
         prefix = ""

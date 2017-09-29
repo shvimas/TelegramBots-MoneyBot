@@ -1,9 +1,9 @@
 FROM python:3-slim
 
-WORKDIR /bot/src
+WORKDIR /bot
 
-COPY ../bot /bot
-COPY ../src/config.py /bot/src
+COPY ./bot /bot
+COPY ./src/config.py /bot
 
 RUN pip install -r requirements.txt
 
