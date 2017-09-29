@@ -1,4 +1,5 @@
 rm -rfv bot
 svn export https://github.com/shvimas/TelegramBots-MoneyBot/trunk/src ./bot/
+docker rmi shvimas-bot
 docker build -t shvimas-bot .
 rm -rfv bot
