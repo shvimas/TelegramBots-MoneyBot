@@ -53,6 +53,7 @@ def add(message):
         amount = words[2]
         result = data.get_user_container(user_id).add(cat, amount)
         bot.send_message(user_id, result)
+        data.dump_node(user_id)
 
 
 @bot.message_handler(commands=["remove"])
@@ -64,6 +65,7 @@ def remove(message):
         return
     result = data.get_user_container(user_id).remove(words[1])
     bot.send_message(user_id, result)
+    data.dump_node(user_id)
 
 
 @bot.message_handler(commands=["look"])
@@ -100,6 +102,7 @@ def set_current(message):
     data.set_user_container(user_id, new_container)
     bot.send_message(user_id, "Set as current:\n\t" +
                      "\n\t".join(new_container.to_string().split(sep="\n")))
+    data.dump_node(user_id)
 
 
 @bot.message_handler(commands=["reset"])
@@ -108,6 +111,7 @@ def reset_current(message):
     data.get_user_history(user_id).save(data.get_user_container(user_id))
     data.set_user_container(user_id, Container())
     bot.send_message(user_id, "Reset current")
+    data.dump_node(user_id)
 
 
 @bot.message_handler(commands=["getid"])
