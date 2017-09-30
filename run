@@ -1,1 +1,1 @@
-docker run -it -v ~/Desktop/Github/TelegramBots-MoneyBot/src/dumped:/bot/dumped shvimas-bot
+docker run -it -v ~/Desktop/Github/TelegramBots-MoneyBot/dumped:/bot/dumped shvimas-bot

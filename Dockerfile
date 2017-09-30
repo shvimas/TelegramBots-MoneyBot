@@ -2,9 +2,12 @@ FROM python:3-slim
 
 WORKDIR /bot
 
-COPY ./bot /bot
-COPY ./src/config.py /bot
+COPY ./git-tmp/src/requirements.txt .
 
 RUN pip install -r requirements.txt
 
-CMD ["/bin/bash"]
+COPY ./dumped ./dumped
+COPY ./git-tmp/src .
+COPY ./src/config.py .
+
+CMD ["python", "main.py"]
