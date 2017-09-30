@@ -1,9 +1,2 @@
-IMAGE=shvimas-bot
-TMPDIR=./git-tmp
-REPO=https://github.com/shvimas/TelegramBots-MoneyBot.git
-
-rm -rfv TMPDIR
-mkdir TMPDIR
-git clone REPO TMPDIR
-docker build -t IMAGE .
-rm -rfv TMPDIR
+git pull
+docker build -t shvimas-bot .
