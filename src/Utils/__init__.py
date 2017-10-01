@@ -92,6 +92,8 @@ class History:
         result = ""
         for container in self.containers:
             result += container.to_string() + "\n"
+        if result == "":
+            result = "<empty>"
         return result
 
 
