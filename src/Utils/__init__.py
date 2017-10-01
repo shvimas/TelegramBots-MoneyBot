@@ -139,7 +139,7 @@ class Nodes:
 
 
 class Data:
-    dump_dir = "../dumped"
+    dump_dir = "dumped"
 
     def __init__(self):
         self.nodes = Nodes()
