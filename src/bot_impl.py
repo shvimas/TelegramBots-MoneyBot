@@ -147,7 +147,16 @@ def func(message):
 
 if __name__ == "__main__":
     data = Data()
+    data.read_nodes()
     cmd_alias = {"add": add, "look": look, "history": get_history, "help": get_help,
                  "set": set_current, "reset": reset_current, "remove": remove,
                  "l": look, "h": get_history}
-    bot.polling(none_stop=True)
+    try:
+        bot.polling(none_stop=True)
+    except e:
+        for user_id in data.nodes.keys():
+            print("User: " + data.users[user_id])
+            print("Container:")
+            print(data.get_user_container(user_id).to_string())
+            print("--------------")
+        raise e
