@@ -7,7 +7,7 @@ class Container:
         self.amounts = dict({cat: 0 for cat in self.categories})
 
     def find_category(self, category: str) -> (bool, str):
-        for inner_name in self.categories:
+        for inner_name in self.amounts.keys():
             if category.lower() == inner_name.lower():
                 return True, inner_name
             if category.lower() == "rest":
@@ -16,7 +16,7 @@ class Container:
 
     def update_total(self):
         total = 0
-        keys = [key for key in self.amounts if key != "Total"]
+        keys = [key for key in self.amounts.keys() if key != "Total"]
         for key in keys:
             total += self.amounts[key]
         self.amounts.update({"Total": total})
