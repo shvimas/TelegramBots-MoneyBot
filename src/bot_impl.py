@@ -2,7 +2,7 @@
 
 import telebot
 import config
-from src.Utils import *
+from Utils import *
 
 bot = telebot.TeleBot(config.token)
 
