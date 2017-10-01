@@ -1,2 +1,1 @@
-git pull
-docker build -t shvimas-bot .
+git pull && docker build -t shvimas-bot .
