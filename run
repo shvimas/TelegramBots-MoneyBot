@@ -1,1 +1,1 @@
-docker run -d --name=budget-bot -v ~/telegramBots/TelegramBots-MoneyBot/dumped:/bot/dumped shvimas-bot
+docker run -d --name=budget-bot -v ~/telegramBots/TelegramBots-MoneyBot/dumped:/bot/dumped --restart=on-failure shvimas-bot
