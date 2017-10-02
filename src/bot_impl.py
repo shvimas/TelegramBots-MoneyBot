@@ -153,7 +153,7 @@ if __name__ == "__main__":
                  "l": look, "h": get_history}
     try:
         bot.polling(none_stop=True)
-    except e:
+    except Exception as e:
         for user_id in data.nodes.keys():
             print("User: " + data.users[user_id])
             print("Container:")

@@ -219,4 +219,6 @@ class Data:
         files = [f for f in os.listdir(self.dump_dir) if str(f).endswith(".txt")]
         for filename in files:
             user_id = int(filename.split("_")[0])
+            username = filename.split("_")[1]
+            self.users.add_user(user_id, username)
             self.nodes.update(self.read_node(user_id))
