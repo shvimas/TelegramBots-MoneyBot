@@ -151,12 +151,13 @@ if __name__ == "__main__":
     cmd_alias = {"add": add, "look": look, "history": get_history, "help": get_help,
                  "set": set_current, "reset": reset_current, "remove": remove,
                  "l": look, "h": get_history}
-    try:
-        bot.polling(none_stop=True)
-    except Exception as e:
-        for user_id in data.nodes.keys():
-            print("User: " + data.users[user_id])
-            print("Container:")
-            print(data.get_user_container(user_id).to_string())
-            print("-" * 30 + "\n")
-        raise e
+    while True:
+        try:
+            bot.polling(none_stop=True)
+        except Exception as e:
+            for user_id in data.nodes.keys():
+                print("User: " + data.users[user_id])
+                print("Container:")
+                print(data.get_user_container(user_id).to_string())
+                print("-" * 30 + "\n")
+            print(str(e))

@@ -5,4 +5,5 @@ if __name__ == "__main__":
         os.system("python bot_impl.py")
     except Exception as e:
         print(str(e))
-        os.system("python main.py")
+        #  does not work
+        #  os.system("python main.py")
