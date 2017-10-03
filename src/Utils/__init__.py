@@ -192,10 +192,14 @@ class Data:
                     if "<empty>" in line:
                         container = Container().empty()
                     else:
-                        category, amount = line.split(" : ")[0:2]
-                        category = category.replace("\n", "").replace("\t", "").replace(" ", "")
-                        amount = amount.replace("\n", "").replace("\t", "").replace(" ", "")
-                        container.add(category, amount)
+                        try:
+                            category, amount = line.split(" : ")[0:2]
+                            category = category.replace("\n", "").replace("\t", "").replace(" ", "")
+                            amount = amount.replace("\n", "").replace("\t", "").replace(" ", "")
+                            container.add(category, amount)
+                        except ValueError:
+                            print("Warn: failed to read " + line + " in " + file.name)
+                            container = Container().empty()
             else:
                 break
         return container
