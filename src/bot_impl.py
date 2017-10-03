@@ -158,5 +158,5 @@ if __name__ == "__main__":
             print("User: " + data.users[user_id])
             print("Container:")
             print(data.get_user_container(user_id).to_string())
-            print("--------------")
+            print("-" * 30 + "\n")
         raise e

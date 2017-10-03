@@ -189,10 +189,13 @@ class Data:
         for line in file:
             if line != "\n":
                 if line.startswith("\t"):
-                    category, amount = line.split(" : ")[0:2]
-                    category = category.replace("\n", "").replace("\t", "").replace(" ", "")
-                    amount = amount.replace("\n", "").replace("\t", "").replace(" ", "")
-                    container.add(category, amount)
+                    if "<empty>" in line:
+                        container = Container().empty()
+                    else:
+                        category, amount = line.split(" : ")[0:2]
+                        category = category.replace("\n", "").replace("\t", "").replace(" ", "")
+                        amount = amount.replace("\n", "").replace("\t", "").replace(" ", "")
+                        container.add(category, amount)
             else:
                 break
         return container
