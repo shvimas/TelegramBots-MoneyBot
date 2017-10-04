@@ -155,8 +155,7 @@ class Data:
     
     def set_user_container(self, user_id: int, cont: Container):
         history = self.get_user_history(user_id)
-        history.save(self.get_user_container(user_id))
-        self.nodes.update({self.users[user_id]: (cont, history)})
+        self.nodes.update({user_id: (cont, history)})
     
     def register_user(self, message) -> int:
         user_id = message.chat.id
@@ -170,7 +169,6 @@ class Data:
         return str(user_id) + "_" + self.users[user_id] + "_node.txt"
 
     def dump_node(self, user_id):
-        # self.get_user_history(user_id).save(self.get_user_container(user_id))
         out = open(self.dump_dir + "/" + self.get_node_dump_name(user_id), mode="w")
         out.write("Container:\n\t" +
                   "\n\t".join(self.nodes[user_id][0].to_string()[:-1].split("\n")) +

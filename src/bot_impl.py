@@ -107,11 +107,24 @@ def set_current(message):
 
 @bot.message_handler(commands=["reset"])
 def reset_current(message):
-    user_id = message.chat.id
+    user_id = data.register_user(message)
     data.get_user_history(user_id).save(data.get_user_container(user_id))
-    data.set_user_container(user_id, Container())
+    data.set_user_container(user_id, Container().empty())
     bot.send_message(user_id, "Reset current")
     data.dump_node(user_id)
+
+
+@bot.message_handler(commands=["empty"])
+def empty_current(message):
+    user_id = data.register_user(message)
+    data.get_user_history(user_id).save(data.get_user_container(user_id))
+    cont = data.get_user_container(user_id)
+    for key in cont.amounts.keys():
+        cont.amounts.update({key: 0})
+    data.set_user_container(user_id, cont)
+    bot.send_message(user_id, "Emptied current")
+    data.dump_node(user_id)
+
 
 
 @bot.message_handler(commands=["getid"])
@@ -141,8 +154,7 @@ def func(message):
         cmd_alias[cmd](message)
     else:
         bot.send_message(message.chat.id,
-                         """Could not recognize your request
-                         Print help for list of commands""")
+                         """Could not recognize your request\n\nPrint help for list of commands""")
 
 
 if __name__ == "__main__":
@@ -150,7 +162,7 @@ if __name__ == "__main__":
     data.read_nodes()
     cmd_alias = {"add": add, "look": look, "history": get_history, "help": get_help,
                  "set": set_current, "reset": reset_current, "remove": remove,
-                 "l": look, "h": get_history}
+                 "l": look, "h": get_history, "empty": empty_current}
     while True:
         try:
             bot.polling(none_stop=True)
