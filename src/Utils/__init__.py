@@ -9,7 +9,7 @@ class Container:
     def find_category(self, category: str) -> (bool, str):
         for inner_name in self.amounts.keys():
             if category.lower() == inner_name.lower():
-                return True, inner_names
+                return True, inner_name
         return False, category
 
     def update_total(self):
